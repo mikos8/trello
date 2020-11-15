@@ -15,7 +15,7 @@ document.querySelectorAll(".column").forEach((columnElement) => {
     .addEventListener("click", addCards);
 });
 
-function addColumn() {
+function addColumn(event) {
   let text = prompt("write new item");
   const columEl = `<div class="column" draggable="true" data-column-id="${columnIdCounter}">
                 <p class="column-header" contenteditable="true">${text}</p>
@@ -33,18 +33,27 @@ function addColumn() {
 
   colElem
     .querySelector("[data-action-addNote]")
-    .addEventListener("click", addCards);
+    .addEventListener("click", function (event) {
+      const noteEl = document.createElement("div");
+      noteEl.classList.add("note");
+      noteEl.setAttribute("data-note-id", noteIdCounter);
+      noteEl.setAttribute("grabble", "true");
+      noteEl.innerText = prompt("write new Task");
+      noteIdCounter++;
+
+      colElem.querySelector("[data-notes]").append(noteEl);
+      console.log(noteIdCounter);
+    });
   columnIdCounter++;
 }
 
-function addCards(columnElement) {
+function addCards(event) {
   const noteEl = document.createElement("div");
   noteEl.classList.add("note");
   noteEl.setAttribute("data-note-id", noteIdCounter);
   noteEl.setAttribute("grabble", "true");
   noteEl.innerText = prompt("write new Task");
   noteIdCounter++;
-  this.closest(".column").querySelector("[data-notes]").append(noteEl);
-  console.log(this.closest(".column"));
+  columnElement.querySelector("[data-notes]").append(noteEl);
   console.log(noteIdCounter);
 }
