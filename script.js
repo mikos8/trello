@@ -48,3 +48,4 @@ function addCards(columnElement) {
   console.log(this.closest(".column"));
   console.log(noteIdCounter);
 }
+//daw
