@@ -18,7 +18,7 @@ document.querySelectorAll(".column").forEach((columnElement) => {
 function addColumn() {
   let text = prompt("write new item");
   const columEl = `<div class="column" draggable="true" data-column-id="${columnIdCounter}">
-                <p class="column-header" contenteditable="true">${text}</p>
+                <p class="column-header">${text}</p>
                 <div data-notes></div>
                 <p class="column-footer">
                   <span data-action-addNote class="action"
@@ -34,7 +34,21 @@ function addColumn() {
   colElem
     .querySelector("[data-action-addNote]")
     .addEventListener("click", addCards);
+  // добавляю событие на заголовок колонки чтобы редактировать
+  const columnHeader = colElem.querySelector(".column-header");
+
+  columnHeader.addEventListener("dblclick", function (event) {
+    columnHeader.setAttribute("contenteditable", true);
+    columnHeader.focus();
+  });
+
+  columnHeader.addEventListener("blur", function (event) {
+    columnHeader.removeAttribute("contenteditable", true);
+    columnHeader.focus();
+  });
+
   columnIdCounter++;
+  addContentedAttribute();
 }
 
 function addCards(columnElement) {
@@ -47,5 +61,18 @@ function addCards(columnElement) {
   this.closest(".column").querySelector("[data-notes]").append(noteEl);
   console.log(this.closest(".column"));
   console.log(noteIdCounter);
+  addContentedAttribute(noteEl);
 }
-//daw
+//
+
+document.querySelectorAll(".note").forEach(addContentedAttribute);
+
+function addContentedAttribute(noteElement) {
+  noteElement.addEventListener("dblclick", function (event) {
+    noteElement.setAttribute("contenteditable", "true");
+    noteElement.focus();
+  });
+  noteElement.addEventListener("blur", function (event) {
+    noteElement.removeAttribute("contenteditable", "true");
+  });
+}
