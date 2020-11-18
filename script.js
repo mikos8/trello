@@ -31,22 +31,27 @@ function addColumn() {
   const colElem = document.querySelector(
     `[data-column-id="${columnIdCounter}"]`
   );
-
+  //событие на налпись добавить карточку условно кнопка
   colElem
     .querySelector("[data-action-addNote]")
     .addEventListener("click", addCards);
   // добавляю событие на заголовок колонки чтобы редактировать
   const columnHeader = colElem.querySelector(".column-header");
 
+  // добавляю событие на двойной клик для редактирования заголовка колонки
   columnHeader.addEventListener("dblclick", function (event) {
-    columnHeader.setAttribute("contenteditable", true);
-    columnHeader.focus();
+    columnHeader.setAttribute("contenteditable", true); //добавляю аттрибут
+    columnHeader.focus(); //делаю фокус
   });
 
+  //событие при потере фокуса то есть когда блюр
   columnHeader.addEventListener("blur", function (event) {
     columnHeader.removeAttribute("contenteditable", true);
-    columnHeader.focus();
   });
+
+  if (!colElem.textContent.length) {
+    colElem.remove();
+  }
 
   columnIdCounter++;
 }
@@ -55,7 +60,7 @@ function addCards(columnElement) {
   const noteEl = document.createElement("div");
   noteEl.classList.add("note");
   noteEl.setAttribute("data-note-id", noteIdCounter);
-  noteEl.setAttribute("grabble", "true");
+  noteEl.setAttribute("draggable", "true");
   noteEl.innerText = prompt("write new Task");
   noteIdCounter++;
   this.closest(".column").querySelector("[data-notes]").append(noteEl);
@@ -64,17 +69,24 @@ function addCards(columnElement) {
   addContentedAttribute(noteEl);
 }
 //
-
 document.querySelectorAll(".note").forEach(addContentedAttribute);
 
+//функция добавления аттрибутов
 function addContentedAttribute(noteElement) {
   noteElement.addEventListener("dblclick", function (event) {
     noteElement.setAttribute("contenteditable", "true");
+    noteElement.removeAttribute("draggable");
+    noteElement.closest(".column").removeAttribute("draggable");
     noteElement.focus();
   });
 
   noteElement.addEventListener("blur", function (event) {
     noteElement.removeAttribute("contenteditable", "true");
+    if (!noteElement.textContent.length) {
+      noteElement.remove();
+      noteElement.setAttribute("draggable", "true");
+      noteElement.closest(".column").setAttribute("draggable", "true");
+    }
   });
 
   noteElement.addEventListener("dragstart", dragstart_noteHandler);
@@ -89,6 +101,7 @@ function addContentedAttribute(noteElement) {
     this.classList.add("dragged");
     console.log("dragstart", event, this);
   }
+
   function dragend_noteHandler(event) {
     draggedNote = null;
     this.classList.remove("dragged");
@@ -99,6 +112,7 @@ function addContentedAttribute(noteElement) {
 
     console.log("dragend", event, this);
   }
+
   function dragenter_noteHandler(event) {
     if (this === draggedNote) {
       return;
@@ -106,6 +120,7 @@ function addContentedAttribute(noteElement) {
     this.classList.add("under");
     console.log("dragenter", event, this);
   }
+
   function dragover_noteHandler(event) {
     event.preventDefault();
     if (this === draggedNote) {
@@ -113,6 +128,7 @@ function addContentedAttribute(noteElement) {
     }
     console.log("dragover", event, this);
   }
+
   function dragleave_noteHandler(event) {
     if (this === draggedNote) {
       return;
@@ -120,6 +136,7 @@ function addContentedAttribute(noteElement) {
     this.classList.remove("under");
     console.log("dragleave", event, this);
   }
+
   function drop_noteHandler(event) {
     if (this === draggedNote) {
       return;
