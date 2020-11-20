@@ -1,3 +1,4 @@
+let noteIdCounter = 8;
 let columnIdCounter = 4;
 let draggedElement = null;
 let mouse = { x: 0, y: 0 };
@@ -56,7 +57,6 @@ function addColumn() {
 }
 
 function addCards(columnElement) {
-  w;
   const noteEl = document.createElement("div");
   noteEl.classList.add("note");
   noteEl.setAttribute("data-note-id", Note.noteIdCounter);
