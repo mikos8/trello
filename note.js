@@ -18,74 +18,74 @@ const Note = {
           }
         });
       
-        noteElement.addEventListener("dragstart", dragstart_noteHandler);
-        noteElement.addEventListener("dragend", dragend_noteHandler);
-        noteElement.addEventListener("dragenter", dragenter_noteHandler);
-        noteElement.addEventListener("dragover", dragover_noteHandler);
-        noteElement.addEventListener("dragleave", dragleave_noteHandler);
-        noteElement.addEventListener("drop", drop_noteHandler);
+        noteElement.addEventListener("dragstart", Note.dragstart_noteHandler);
+        noteElement.addEventListener("dragend", Note.dragend_noteHandler);
+        noteElement.addEventListener("dragenter", Note.dragenter_noteHandler);
+        noteElement.addEventListener("dragover", Note.dragover_noteHandler);
+        noteElement.addEventListener("dragleave", Note.dragleave_noteHandler);
+        noteElement.addEventListener("drop", Note.drop_noteHandler);
+      },
       
-        function dragstart_noteHandler(event) {
-          Note.draggedNote = this;
-          this.classList.add("dragged");
-          console.log("dragstart", event, this);
+      dragstart_noteHandler(event) {
+        Note.draggedNote = this;
+        this.classList.add("dragged");
+        console.log("dragstart", event, this);
+      },
+    
+      dragend_noteHandler(event) {
+        Note.draggedNote = null;
+        this.classList.remove("dragged");
+    
+        document
+          .querySelectorAll(".note")
+          .forEach((noteEl) => noteEl.classList.remove("under"));
+    
+        console.log("dragend", event, this);
+      },
+    
+      dragenter_noteHandler(event) {
+        if (this === Note.draggedNote) {
+          return;
         }
-      
-        function dragend_noteHandler(event) {
-          Note.draggedNote = null;
-          this.classList.remove("dragged");
-      
-          document
-            .querySelectorAll(".note")
-            .forEach((noteEl) => noteEl.classList.remove("under"));
-      
-          console.log("dragend", event, this);
+        this.classList.add("under");
+        console.log("dragenter", event, this);
+      },
+    
+      dragover_noteHandler(event) {
+        event.preventDefault();
+        if (this === Note.draggedNote) {
+          return;
         }
-      
-        function dragenter_noteHandler(event) {
-          if (this === Note.draggedNote) {
-            return;
-          }
-          this.classList.add("under");
-          console.log("dragenter", event, this);
+        console.log("dragover", event, this);
+      },
+    
+      dragleave_noteHandler(event) {
+        if (this === Note.draggedNote) {
+          return;
         }
-      
-        function dragover_noteHandler(event) {
-          event.preventDefault();
-          if (this === Note.draggedNote) {
-            return;
-          }
-          console.log("dragover", event, this);
+        this.classList.remove("under");
+        console.log("dragleave", event, this);
+      },
+    
+      drop_noteHandler(event) {
+        if (this === Note.draggedNote) {
+          return;
         }
-      
-        function dragleave_noteHandler(event) {
-          if (this === Note.draggedNote) {
-            return;
-          }
-          this.classList.remove("under");
-          console.log("dragleave", event, this);
-        }
-      
-        function drop_noteHandler(event) {
-          if (this === Note.draggedNote) {
-            return;
-          }
-      
-          if (this.parentElement === Note.draggedNote.parentElement) {
-            const note = Array.from(this.parentElement.querySelectorAll(".note"));
-            const indexA = note.indexOf(this);
-            const indexB = note.indexOf(Note.draggedNote);
-            console.log(indexA, indexB);
-            if (indexA < indexB) {
-              this.parentElement.insertBefore(Note.draggedNote, this);
-            } else {
-              this.parentElement.insertBefore(Note.draggedNote, this.nextElementSibling);
-            }
-          } else {
+    
+        if (this.parentElement === Note.draggedNote.parentElement) {
+          const note = Array.from(this.parentElement.querySelectorAll(".note"));
+          const indexA = note.indexOf(this);
+          const indexB = note.indexOf(Note.draggedNote);
+          console.log(indexA, indexB);
+          if (indexA < indexB) {
             this.parentElement.insertBefore(Note.draggedNote, this);
+          } else {
+            this.parentElement.insertBefore(Note.draggedNote, this.nextElementSibling);
           }
-      
-          console.log("drop", event, this);
+        } else {
+          this.parentElement.insertBefore(Note.draggedNote, this);
         }
+    
+        console.log("drop", event, this);
       }
 }
