@@ -33,7 +33,7 @@ const Note = {
     Note.draggedNote = this;
     this.classList.add("dragged");
     console.log("dragstart Note", this);
-   
+
     document
       .querySelectorAll(".column")
       .forEach((colElem) => colElem.removeAttribute("draggable"));
@@ -47,7 +47,7 @@ const Note = {
       .forEach((noteEl) => noteEl.classList.remove("under"));
 
     console.log("dragend Note", this);
-    
+
     document
       .querySelectorAll(".column")
       .forEach((colElem) => colElem.setAttribute("draggable", "true"));
@@ -61,9 +61,10 @@ const Note = {
     this.classList.add("under");
     console.log("dragenter Note", this);
   },
-  //
+
   dragover_noteHandler(event) {
     event.preventDefault();
+    event.stopPropagation();
     if (!Note.dragged || this === Note.dragged) {
       return;
     }
@@ -85,11 +86,13 @@ const Note = {
     if (!Note.dragged || this === Note.dragged) {
       return;
     }
+
     if (this.parentElement === Note.dragged.parentElement) {
       const note = Array.from(this.parentElement.querySelectorAll(".note"));
       const indexA = note.indexOf(this);
       const indexB = note.indexOf(Note.dragged);
       console.log(indexA, indexB);
+
       if (indexA < indexB) {
         this.parentElement.insertBefore(Note.dragged, this);
       } else {
