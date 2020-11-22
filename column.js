@@ -62,17 +62,14 @@ const Colon = {
     }
 
     function dragend_HandlerColon(event) {
-      event.stopPropagation();
+      Colon.dragged.classList.remove("dragged");
       Colon.dragged = null;
       Colon.dropped = null;
-      console.log("dragendColumn", this);
-      this.classList.remove("dragged");
-      document
-        .querySelectorAll(".column")
-        .forEach((colElem) => colElem.classList.remove("under"));
+
       document
         .querySelectorAll(".note")
         .forEach((noteElem) => noteElem.setAttribute("draggable", "true"));
+      console.log("dragendColumn", this);
     }
     //
     /*function dragenter_HandlerColon(event) {
