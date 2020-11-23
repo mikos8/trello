@@ -104,13 +104,20 @@ const Note = {
 
     console.log("drop Note", this);
   },
-  addCards(columnElement) {
+  addCards(columnElement,id = null) { 
     const noteEl = document.createElement("div");
     noteEl.classList.add("note");
-    noteEl.setAttribute("data-note-id", Note.noteIdCounter);
+
+    if(id){
+      noteEl.setAttribute("data-note-id", id);
+    }else{
+      noteEl.setAttribute("data-note-id", Note.noteIdCounter);
+      Note.noteIdCounter++;
+    }
+      
     noteEl.setAttribute("draggable", "true");
     noteEl.innerText = prompt("write new Task");
-    Note.noteIdCounter++;
+    
     this.closest(".column").querySelector("[data-notes]").append(noteEl);
     console.log(this.closest(".column"));
     console.log(Note.noteIdCounter);

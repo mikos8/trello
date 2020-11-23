@@ -17,7 +17,7 @@ const Colon = {
     const colElem = document.querySelector(
       `[data-column-id="${Colon.columnIdCounter}"]`,
     );
-
+    Colon.columnIdCounter++;
     //событие на надпись  [+ добавить карточку] условно кнопка
     colElem
       .querySelector("[data-action-addNote]")
@@ -40,9 +40,43 @@ const Colon = {
       }
     });
 
-    Colon.columnIdCounter++;
-    Colon.addContentAttribute(colElem);
+     Colon.addContentAttribute(colElem);
   },
+  addColumnProcess(id = null) {
+  
+    const columEl = `<div class="column" draggable="true" data-column-id="${id}">
+                <p class="column-header">Plane</p>
+                <div data-notes></div>
+                <p class="column-footer">
+                  <span data-action-addNote class="action"
+                    >+ Добавить карточку</span
+                  >
+                </p>
+              </div>`;
+    
+    //событие на надпись  [+ добавить карточку] условно кнопка
+    /*colElem.querySelector("[data-action-addNote]")
+      .addEventListener("click", Note.addCards);
+    // добавляю событие на заголовок колонки чтобы редактировать
+    const columnHeader = colElem.querySelector(".column-header");
+    // добавляю событие на двойной клик для редактирования заголовка колонки
+    columnHeader.addEventListener("dblclick", function (event) {
+      columnHeader.setAttribute("contenteditable", true); //добавляю аттрибут
+      columnHeader.focus(); //делаю фокус
+    });
+    //событие при потере фокуса то есть когда блюр=потеря фокуса
+    columnHeader.addEventListener("blur", function (event) {
+      columnHeader.removeAttribute("contenteditable", true);
+      if (!colElem.textContent.length) {
+        colElem.remove();
+        colElem.setAttribute("draggable", "true");
+      }
+    });
+
+     Colon.addContentAttribute(colElem);*/
+    return columEl;
+  }
+  ,
   addContentAttribute(columnEl) {
     columnEl.addEventListener("dragstart", dragstart_HandlerColon);
     columnEl.addEventListener("dragend", dragend_HandlerColon);

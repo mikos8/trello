@@ -40,8 +40,15 @@ const App = {
     if (!localStorage.getItem("trello")) {
       return;
     }
+    const mountPoint = document.querySelector('.columns');
+    mountPoint.innerHTML = '';
 
     const object = JSON.parse(localStorage.getItem("trello"));
     console.log(object);
+
+    for(const column of object.columns.items){
+      const columnElement = Colon.addColumnProcess(column.id,);
+      mountPoint.append(columnElement);
+    }
   },
 };
